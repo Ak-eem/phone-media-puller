@@ -9,3 +9,4 @@ Copies all media from an Android phone via USB/MTP into a `w` folder on the lapt
 3. Run `powershell -ExecutionPolicy Bypass -File pull_media.ps1`.
 
 This script only copies files and never deletes anything from the phone.
+Re-runs skip files that already exist (same name + same size), so it is safe to run multiple times.

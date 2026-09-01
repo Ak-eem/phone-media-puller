@@ -28,17 +28,24 @@ function Copy-MediaFolder($folder) {
             $ext = [System.IO.Path]::GetExtension($name).ToLower()
             if ($mediaExts -contains $ext) {
                 $target = if ($imageExts -contains $ext) { $pics } else { $vids }
+                $srcSize = $item.Size
                 $destFile = Join-Path $target $name
+                if (Test-Path $destFile) {
+                    if ((Get-Item $destFile).Length -eq $srcSize) {
+                        Write-Host "  = skip dup: $name" -ForegroundColor DarkGray
+                        continue
+                    }
+                }
                 $i = 1
+                $base = [System.IO.Path]::GetFileNameWithoutExtension($name)
                 while (Test-Path $destFile) {
-                    $base = [System.IO.Path]::GetFileNameWithoutExtension($name)
                     $destFile = Join-Path $target ("{0}_{1}{2}" -f $base, $i, $ext)
                     $i++
                 }
                 try {
                     $folder.CopyHere($item, 16)
                     $script:copied++
-                    Write-Host "  + $name -> $($target | Split-Path -Leaf)" -ForegroundColor Green
+                    Write-Host "  + $name" -ForegroundColor Green
                 } catch { Write-Host "  ! failed: $name" -ForegroundColor Yellow }
             }
         }
