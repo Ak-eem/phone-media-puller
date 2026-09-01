@@ -1,17 +1,12 @@
-# phone-media-puller
+Phone Media Puller — copies all media (images, videos, audio) from an Android phone over USB/MTP into a Desktop\w folder, mirroring the phone's folder structure (e.g. w\DCIM\Camera, w\WhatsApp\Media).
 
-Copies all media from an Android phone via USB/MTP into a `w` folder
-on the laptop split into `Pictures/` and `Videos/`.
+Steps:
+1) plug phone in with USB mode = File transfer / MTP, keep it unlocked
+2) run: powershell -ExecutionPolicy Bypass -File pull_media.ps1
 
-## Windows 10 run steps
-
-1. Plug the phone in and select File transfer/MTP mode.
-2. Open PowerShell in the folder containing the script.
-3. Run `powershell -ExecutionPolicy Bypass -File pull_media.ps1`.
-
-This script only copies files and never deletes anything
-from the phone.
-Re-runs skip files that already exist (same name + same size), so it is safe to
-run multiple times.
-
-Junk cache files (.exo, .crypted, .tmp, .part, .cache) are skipped automatically.
+Notes:
+- only copies, never deletes from the phone
+- re-runs skip existing files
+- junk cache files (.exo, .crypted, .tmp, .part, .cache, .thumb) are skipped automatically
+- URL-named files are auto-renamed (photo.jpeg%3Fwidth=300 -> photo.jpeg)
+- up to 3 folders copy in parallel for speed
